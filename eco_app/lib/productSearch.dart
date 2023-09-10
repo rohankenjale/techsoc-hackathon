@@ -78,13 +78,22 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   } else {
                     final productData = snapshot.data as Map<String, dynamic>;
                     final productName = productData['product']['product_name'];
+                    final productImage = productData['product']['image_url'];
                     final ecoScore = productData['product']['ecoscore_score'];
                     final String ecoScoreGrade = productData['product']['ecoscore_grade'];
 
                     return Column(
                       children: [
+                        Container(
+                          margin: EdgeInsets.all(20),
+                          height: 200,
+                          width: 200,
+                          child: Image.network(productImage)),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Text(
-                          'Stock Name:',
+                          'Product Name:',
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -138,11 +147,9 @@ class OpenFoodFactsApi {
     final response = await http.get(Uri.parse('$baseUrl$barcode.json'));
 
     if (response.statusCode == 200) {
-      // Parse the JSON response
       final Map<String, dynamic> data = json.decode(response.body);
       return data;
     } else {
-      // Handle errors here
       throw Exception('Failed to load product information');
     }
   }
